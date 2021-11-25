@@ -25,14 +25,18 @@ public class A3GuessNum {
     static String ans;
 
     //int for user lives and the initial live user has
-    static final int INITIAL_LIVE = 10;
+    static final int INITIAL_LIVE = 5;
     static int live = INITIAL_LIVE;
 
     //main method
     public static void main(String[] arg){
         state = 1; //set state of play() method to 1
         
-        System.out.print("Choose your difficulty (1-Easy, 2-Hard): ");
+        System.out.println("Welcome to \"Guess your Number\"!");
+        System.out.println("We will have you guess a number that is in the range of 1 to 100.");
+        System.out.println("We have two difficulties for you to challange yourself\n");
+
+        System.out.print("Choose your difficulty (Type \"1\" for Easy or \"2\" for Hard): ");
         checkDiff();
 
         //game loop
@@ -65,7 +69,6 @@ public class A3GuessNum {
         int num = -1;
         if(state == 1 && live > 0) {
             num = rand.nextInt(highBound - lowBound) + lowBound; //generate random number
-            
             int hint; //declare hint for later use
             
             //ask user for input
@@ -109,7 +112,7 @@ public class A3GuessNum {
             if(in == num && live >= 0) {
                 System.out.println("\nCongrats! You are right");
                 System.out.println("The number is: " + num);
-                System.out.println("Do you want to continue?");
+                System.out.println("Do you want to continue? (Enter \"Yes\" or \"No\")");
                 score += 1;
                 state = 0;
             }
@@ -118,27 +121,13 @@ public class A3GuessNum {
         //if loses
         if(live == 0 && state == 1 && in != num) {
             System.out.println("You Lose!");
-            System.out.println("Do you want to continue?");
+            System.out.println("Do you want to continue? (Enter \"Yes\" or \"No\")");
             state = 0;
         }
 
         //ask if user want to continue the game
         if(state == 0) {
-            ans = input.nextLine();
-            if(ans.equals("Yes")) {
-                running = true;
-                lowBound = 0;
-                highBound = 100;
-                live = INITIAL_LIVE;
-                System.out.println("Loading...\n");
-                System.out.print("Choose your difficulty (1-Easy, 2-Hard): ");
-                checkDiff();
-                state = 1;
-            } else if(ans.equals("No")) {
-                System.out.println("\nScores: " + score);
-                System.out.println("END");
-                running = false;
-            }
+            checkContinue();
         }
     }
 
@@ -177,7 +166,7 @@ public class A3GuessNum {
             if(in == num && live >= 0) {
                 System.out.println("\nCongrats! You are right");
                 System.out.println("The number is: " + num);
-                System.out.println("Do you want to continue?");
+                System.out.println("Do you want to continue? (Enter \"Yes\" or \"No\")");
                 score += 1;
                 state = 0;
             }
@@ -186,33 +175,41 @@ public class A3GuessNum {
         //if loses
         if(live == 0 && state == 1 && in != num) {
             System.out.println("You Lose!");
-            System.out.println("Do you want to continue?");
+            System.out.println("Do you want to continue? (Enter \"Yes\" or \"No\")");
             state = 0;
         }
 
         //ask if user want to continue the game
         if(state == 0) {
-            ans = input.nextLine();
-            if(ans.equals("Yes")) {
-                running = true;
-                lowBound = 0;
-                highBound = 100;
-                live = INITIAL_LIVE;
-                System.out.println("Loading...\n");
-                System.out.print("Choose your difficulty (1-Easy, 2-Hard): ");
-                checkDiff();
-                state = 1;
-            } else if(ans.equals("No")) {
-                System.out.println("\nScores: " + score);
-                System.out.println("END");
-                running = false;
-            }
+            checkContinue();
+        }
+    }
+
+    public static void checkContinue() {
+        while(input.hasNextInt() || !(input.hasNext("Yes") || input.hasNext("No"))) {
+            System.out.println("Wrong Syntax! Try Again! (Use \"Yes\" or \"No\")");
+            input.next();
+        }
+        ans = input.nextLine();
+        if(ans.equals("Yes")) {
+            running = true;
+            lowBound = 0;
+            highBound = 100;
+            live = INITIAL_LIVE;
+            System.out.println("Loading...\n");
+            System.out.print("Choose your difficulty (Type \"1\" for Easy or \"2\" for Hard): ");
+            checkDiff();
+            state = 1;
+        } else if(ans.equals("No")) {
+            System.out.println("\nScores: " + score);
+            System.out.println("END");
+            running = false;
         }
     }
 
     //method to check for input validation
     public static void check() {
-
+        int count = 0;
         //check if user didn't type an int
         while(!input.hasNextInt()) {
             System.out.println("That is not a number!");
@@ -223,10 +220,12 @@ public class A3GuessNum {
         
         //check if the input is in range
         while(in > 100 || in < 1) {
+            count++;
             System.out.println("That number is not in range!");
             System.out.print("Please enter a new number: ");
             check();
         }
         live--;
+        System.out.println(live);
     }
 }
