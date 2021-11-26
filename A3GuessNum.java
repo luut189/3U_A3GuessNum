@@ -47,6 +47,7 @@ public class A3GuessNum {
                 playHard();
             }
         }
+        input.close();
 
     }// close main
 
@@ -225,7 +226,7 @@ public class A3GuessNum {
             System.out.print("Please enter a new number: ");
             check();
         }
+        live += count;
         live--;
-        System.out.println(live);
     }
 }
