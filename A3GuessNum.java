@@ -18,8 +18,8 @@ public class A3GuessNum {
     static int in, state, diff, score; //int for (user input, state for play() method, difficulty, and score)
 
     //int for bound
-    static int lowBound = 0;
-    static int highBound = 100;
+    static int lowBound = 1;
+    static int highBound = 101;
 
     //String for user answer
     static String ans;
@@ -46,9 +46,8 @@ public class A3GuessNum {
         state = 1; //set state of play() method to 1
         
         System.out.println("Welcome to \"Guess your Number\"!");
-        System.out.println("We will have you guess a number that is in the range of 1 to 100.");
-        System.out.println("We have two difficulties for you to challange yourself\n");
-
+        System.out.println("We will have you guess a number that is in the range of 1 to 100.\nYou have " + INITIAL_LIVE + " times to guess.");
+        System.out.println("We have two difficulties for you to challange yourself.\n");
         System.out.print("Choose your difficulty (Type \"1\" for Easy or \"2\" for Hard): ");
         checkDiff();
     }
@@ -59,7 +58,6 @@ public class A3GuessNum {
         int num = -1;
         if(state == 1 && live > 0) {
             num = rand.nextInt(highBound - lowBound) + lowBound; //generate random number
-            int hint; //declare hint for later use
             
             //ask user for input
             System.out.print("Guess a number: ");
@@ -69,15 +67,25 @@ public class A3GuessNum {
             while(in != num && live > 0) {
                 //if user's number is less than the generated number
                 if(in < num) {
-                    lowBound = in;
-                    hint = (num-in) - ((num-in)%10);
+                    if(in < lowBound) {}
+                    else {
+                        lowBound = in;
+                    }
                     System.out.println("\nLives left: " + live);
-                    System.out.println("Current range: (" + lowBound + "-" + highBound + ")");
+                    if(highBound == 101) {
+                        System.out.println("Current range: (" + lowBound + "-" + (highBound-1) + ")");
+                    } else {
+                        System.out.println("Current range: (" + lowBound + "-" + highBound + ")");
+                    }
                     if(diff == 1) {
                         if(num-in >= 1 && num-in <= 10) {
                             System.out.println("You are very close, just a bit higher");
-                        } else {
-                            System.out.println("You are around " + hint + " lower");
+                        } else if(Math.abs(in-num) > 50){
+                            System.out.println("You are FREEZING right now!\nPlease choose a higher number.");
+                        } else if(Math.abs(in-num) > 25) {
+                            System.out.println("You are a bit cold right now.\nPlease choose a higher numer.");
+                        } else if(Math.abs(in-num) > 10) {
+                            System.out.println("You are very warm right now.\nPlease choose a higher number");
                         }
                     }
                     System.out.print("Enter a new number: ");
@@ -86,15 +94,21 @@ public class A3GuessNum {
 
                 //if user's number is more than the generated number
                 else if(in > num) {
-                    highBound = in;
-                    hint = (in-num) - ((in-num)%10);
+                    if(in > highBound) {}
+                    else {
+                        highBound = in;
+                    }
                     System.out.println("\nLives left: " + live);
                     System.out.println("Current range: (" + lowBound + "-" + highBound + ")");
                     if(diff == 1) {
                         if(in-num >= 1 && in-num <= 10) {
                             System.out.println("You are very close, just a bit lower");
-                        } else {
-                            System.out.println("You are around " + hint + " higher");
+                        } else if(Math.abs(in-num) > 50){
+                            System.out.println("You are FREEZING right now!\nPlease choose a lower number.");
+                        } else if(Math.abs(in-num) > 25) {
+                            System.out.println("You are a bit cold right now.\nPlease choose a lower numer.");
+                        } else if(Math.abs(in-num) > 10) {
+                            System.out.println("You are very warm right now.\nPlease choose a lower number");
                         }
                     }
                     System.out.print("Enter a new number: ");
@@ -114,7 +128,7 @@ public class A3GuessNum {
 
         //if loses
         if(live == 0 && state == 1 && in != num) {
-            System.out.println("You Lose!");
+            System.out.println("\nYou Lose!");
             System.out.println("The number is: " + num);
             System.out.println("Do you want to continue? (Enter \"Yes\" or \"No\")");
             state = 0;
@@ -150,8 +164,8 @@ public class A3GuessNum {
         ans = input.nextLine();
         if(ans.equals("Yes")) {
             running = true;
-            lowBound = 0;
-            highBound = 100;
+            lowBound = 1;
+            highBound = 101;
             live = INITIAL_LIVE;
             System.out.println("Loading...\n");
             System.out.print("Choose your difficulty (Type \"1\" for Easy or \"2\" for Hard): ");
@@ -169,8 +183,8 @@ public class A3GuessNum {
         int count = 0;
         //check if user didn't type an int
         while(!input.hasNextInt()) {
-            System.out.println("That is not a number!");
-            System.out.print("Please enter a number: ");
+            System.out.println("That is not a integer!");
+            System.out.print("Please enter a number (int): ");
             input.next();
         }
         in = input.nextInt();
@@ -179,7 +193,7 @@ public class A3GuessNum {
         while(in > 100 || in < 1) {
             count++;
             System.out.println("That number is not in range!");
-            System.out.print("Please enter a new number: ");
+            System.out.print("Please enter a new number (an int in the range of " + (lowBound+1) + "-" + (highBound-1) + "): ");
             check();
         }
         live += count;
