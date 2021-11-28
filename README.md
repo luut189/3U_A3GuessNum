@@ -14,5 +14,3 @@ Make a guess the number game. The computer generates a random number between 1 a
 
 4. Challenge 4: Be creative! What else can you add to this to make it better? Tell me in your submission what functionality you added.
     - I added a difficulty system (a simple one) for the player to choose from. Because the game would be kind of easy with hint...
-
-Check assignment on classroom for checklist of skills and more hints.

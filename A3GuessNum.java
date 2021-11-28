@@ -77,6 +77,7 @@ public class A3GuessNum {
                     } else {
                         System.out.println("Current range: (" + lowBound + "-" + highBound + ")");
                     }
+                    //if difficulty is "1", then show the hints
                     if(diff == 1) {
                         if(num-in >= 1 && num-in <= 10) {
                             System.out.println("You are very close, just a bit higher");
